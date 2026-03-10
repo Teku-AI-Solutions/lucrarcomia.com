@@ -1,0 +1,652 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #0E0918;
+    /* n8n exact canvas bg */
+    --node-bg: #2d3136;
+    /* n8n exact node bg */
+    --node-border: #444850;
+    --accent: #FF9B26;
+    --text-primary: #C4BBD3;
+    --text-muted: #8b8f98;
+    --dot-color: #241d33;
+    --aurora-1: rgba(255, 155, 38, 0.08);
+    /* Brand Orange */
+    --aurora-2: rgba(255, 76, 57, 0.05);
+    /* Brand Red */
+    --aurora-3: rgba(196, 187, 211, 0.03);
+    /* Lavender Grey */
+    --font-stack: "geomanist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-stack);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+/* Base Aurora Glow Effect */
+.aurora-bg {
+    position: absolute;
+    inset: -50%;
+    width: 200vw;
+    height: 200vh;
+    background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 40%),
+        radial-gradient(circle at 70% 60%, var(--aurora-2), transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--aurora-3), transparent 60%);
+    filter: blur(100px);
+    z-index: 0;
+    animation: drift 30s linear infinite alternate;
+}
+
+@keyframes drift {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(-10%, -10%);
+    }
+}
+
+/* Background Canvas */
+.canvas-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.n8n-canvas {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200vw;
+    height: 200vh;
+    background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+    /* Exact n8n grid size */
+    opacity: 0.6;
+    /* Very subtle */
+}
+
+/* Standalone dotted background for pages without nodes */
+.dotted-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* SVG Connections */
+.connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.connection-path {
+    fill: none;
+    stroke: #444850;
+    /* Elegant static n8n line color */
+    stroke-width: 1.5;
+    /* Removed the bulky glow completely */
+}
+
+/* Node Styling - Accurate n8n Theme */
+#nodes-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.n8n-node-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Connection Anchors */
+.node-anchor {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #27292d;
+    border: 2px solid #55575b;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.node-anchor.left {
+    left: -7px;
+}
+
+.node-anchor.right {
+    right: -7px;
+}
+
+.anchor-label {
+    position: absolute;
+    left: 10px;
+    font-size: 13px;
+    color: #a3a3a3;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Realistic N8N Hero Node Style */
+.hero-n8n-node {
+    background: linear-gradient(180deg, #2a2d32 0%, #1f2125 100%);
+    border: 1px solid #3c3e44;
+    border-radius: 12px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    animation: floatAndFade 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatAndFade {
+    0% {
+        transform: translateY(0px);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-15px);
+        opacity: 1;
+    }
+}
+
+.hero-n8n-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+}
+
+.hero-n8n-anchor {
+    position: absolute;
+    width: 6px;
+    height: 14px;
+    background: #5a6578;
+    border-radius: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.hero-n8n-anchor.left {
+    left: -3px;
+}
+
+.hero-n8n-anchor.right {
+    right: -3px;
+}
+
+/* 1. Compact Square Node */
+.compact-box {
+    background: #25272a;
+    border: 1px solid #3c3e44;
+    border-radius: 6px;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.compact-text-below {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.compact-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.compact-subtitle {
+    color: #8c8c8c;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* 2. Large Rectangular Node (Guardrails) */
+.large-box {
+    background: #25272a;
+    border: 1px solid #3c3e44;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.large-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.large-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.large-subtitle {
+    color: #8c8c8c;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.large-box .node-anchor.right {
+    top: auto;
+    transform: translateY(-50%);
+}
+
+/* 3. Circular Node (Postgres) */
+.circle-box {
+    background: #25272a;
+    border: 2px solid #3c3e44;
+    border-radius: 50%;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.circle-top-label {
+    color: #8c8c8c;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.circle-title-below {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* SVG Rendering */
+.node-svg {
+    display: block;
+}
+
+
+/* Foreground Main UI - Elegant Floating Layout */
+.content-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.elegant-container {
+    padding: 0 20px;
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+    /* Transform to give it that floating detached 3D effect */
+    transform: translateZ(50px);
+    perspective: 1000px;
+    pointer-events: auto;
+    /* Re-enable pointer events since background captures some */
+}
+
+.headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.highlight {
+    background: linear-gradient(90deg, #FF9B26 0%, #FF4C39 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Brand Gradient */
+}
+
+.subheadline {
+    font-size: 18px;
+    color: #a0a0a0;
+    max-width: 500px;
+    margin: 0 auto 40px auto;
+    line-height: 1.5;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Input Form - Clean Line Style */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(20, 20, 20, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 40px;
+    padding: 6px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    transition: border-color 0.3s ease;
+}
+
+.name-field {
+    margin-bottom: 20px;
+}
+
+.input-wrapper:focus-within {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.input-wrapper input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    flex-grow: 1;
+    padding: 10px 24px;
+}
+
+.input-wrapper input::placeholder {
+    color: #555;
+}
+
+.submit-btn {
+    border-radius: 40px;
+    border: 1px solid rgba(255, 170, 75, 0.6);
+    background: linear-gradient(90deg, #FF9B26 0%, #FF4C39 100%);
+    color: #ffffff;
+    padding: 16px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var(--font-stack);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 480px;
+    margin: 16px auto 0 auto;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 4px 15px rgba(255, 76, 57, 0.3);
+}
+
+.submit-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 76, 57, 0.5);
+    filter: brightness(1.1);
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 32px;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Typo Suggestion Box */
+.typo-suggestion {
+    display: none;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding-left: 16px;
+    text-align: left;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.typo-suggestion span {
+    color: var(--aurora-1);
+    /* Use brand orange */
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.typo-suggestion span:hover {
+    color: var(--aurora-2);
+    /* Reddish hover */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+
+    body,
+    html {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .content-overlay {
+        padding: 20px 16px;
+        min-height: 100vh;
+    }
+
+    .elegant-container {
+        padding: 0 20px;
+        max-width: 100%;
+    }
+
+    .headline {
+        font-size: 36px;
+        margin-bottom: 14px;
+    }
+
+    .subheadline {
+        font-size: 14px;
+        padding: 0 8px;
+        margin-bottom: 28px;
+        max-width: 100%;
+    }
+
+    .input-wrapper {
+        border-radius: 40px;
+        padding: 6px;
+        width: 100%;
+        max-width: 340px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .input-wrapper.name-field {
+        margin-bottom: 20px;
+    }
+
+    .input-wrapper input {
+        font-size: 14px;
+        padding: 10px 16px;
+        width: 100%;
+        border-radius: 40px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        max-width: 340px;
+        margin: 20px auto 0 auto;
+        padding: 14px 20px;
+        font-size: 15px;
+        border-radius: 40px;
+    }
+
+    .form-footer {
+        margin-top: 20px;
+        font-size: 11px;
+    }
+
+    /* Keep nodes within bounds */
+    .canvas-wrapper {
+        overflow: hidden;
+    }
+
+    /* Detach nodes from the oversized canvas so % coordinates map to viewport */
+    #nodes-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    /* Hide text labels and anchors on mobile for cleaner look */
+    .mobile-node .compact-text-below,
+    .mobile-node .hero-n8n-anchor {
+        display: none;
+    }
+
+    /* Make nodes very subtle as background decoration */
+    .mobile-node {
+        opacity: 0.2;
+    }
+}
+
+/* iPad / Tablet overrides */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .headline {
+        font-size: 48px;
+    }
+
+    .subheadline {
+        font-size: 16px;
+        max-width: 500px;
+        margin: 0 auto 36px auto;
+    }
+
+    .elegant-container {
+        max-width: 600px;
+    }
+
+    .input-wrapper {
+        border-radius: 40px;
+        padding: 6px;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .input-wrapper.name-field {
+        margin-bottom: 20px;
+    }
+
+    .input-wrapper input {
+        font-size: 15px;
+        padding: 14px 24px;
+        width: 100%;
+    }
+
+    .submit-btn {
+        width: 100%;
+        max-width: 480px;
+        margin: 20px auto 0 auto;
+        padding: 16px 24px;
+        font-size: 16px;
+        border-radius: 40px;
+    }
+
+    .form-footer {
+        margin-top: 28px;
+        font-size: 12px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 380px) {
+    .headline {
+        font-size: 30px;
+    }
+
+    .subheadline {
+        font-size: 13px;
+    }
+
+    .submit-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+}
