@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Inscrição confirmada. Obrigado por se cadastrar na formação Lucrar com IA Pro.">
     <title>Inscrição Quase Concluída - Lucrar com IA Pro</title>
     <link rel="stylesheet" href="style.css">
@@ -31,8 +31,10 @@
 </head>
 
 <body>
-    <!-- Aurora background -->
-    <div class="aurora-bg"></div>
+    <!-- Wrapping the oversized aurora background in an overflow:hidden container to prevent iOS scrolling bug -->
+    <div class="canvas-wrapper">
+        <div class="aurora-bg"></div>
+    </div>
 
     <!-- Background Dot Pattern (No Nodes) -->
     <div class="dotted-bg"></div>
