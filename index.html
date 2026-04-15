@@ -1,24 +1,642 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Lucrar com IA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucrar com IA PRO — Em Breve</title>
+  <meta name="description" content="A Lucrar com IA PRO está sendo construída. Automações, agentes de IA e a melhor comunidade de IA em português." />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0d0d1a;
+      --card:      #1f1f2e;
+      --text:      #ffffff;
+      --muted:     #d1d5db;
+      --orange:    #f97316;
+      --red:       #dc2626;
+      --grad:      linear-gradient(135deg, #f97316, #dc2626);
+      --glow-o:    rgba(249,115,22,0.35);
+    }
 
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-54R35FLT');</script>
-<!-- End Google Tag Manager -->
-    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BG ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(249,115,22,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249,115,22,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── RADIAL GLOW ── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 45%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse, rgba(249,115,22,.12) 0%, rgba(220,38,38,.05) 40%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .page {
+      position: relative; z-index: 2;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 48px 24px;
+    }
+
+    /* ── BADGE ── */
+    .badge {
+      font-size: 10px; letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid rgba(249,115,22,.4);
+      padding: 5px 14px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
+    }
+
+    /* ── TITLE ── */
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 10px;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .logo span {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 400;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeUp .7s .2s ease both;
+    }
+
+    /* ── SCENE ── */
+    .scene {
+      width: min(560px, 94vw);
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      width: min(480px, 90%);
+      margin-top: 28px;
+      animation: fadeUp .7s .5s ease both;
+    }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 10px; letter-spacing: .15em;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .progress-track {
+      height: 6px;
+      background: var(--card);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%;
+      background: var(--grad);
+      border-radius: 3px;
+      box-shadow: 0 0 12px var(--glow-o);
+      animation: fillBar 3.5s 1.2s cubic-bezier(.4,0,.2,1) forwards;
+    }
+    @keyframes fillBar { to { width: 68%; } }
+
+    .tagline {
+      margin-top: 40px;
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(.95rem, 2.2vw, 1.1rem);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      animation: fadeUp .7s .6s ease both;
+    }
+    .tagline strong {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* ── CTA FORM ── */
+    .cta-form {
+      margin-top: 32px;
+      width: min(460px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeUp .7s .7s ease both;
+    }
+    .cta-form .field {
+      background: var(--card);
+      border: 1px solid rgba(249,115,22,.3);
+      border-radius: 3px;
+      transition: border-color .2s;
+    }
+    .cta-form .field:focus-within { border-color: var(--orange); }
+    .cta-form .field input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      padding: 12px 16px;
+      outline: none;
+    }
+    .cta-form .field input::placeholder { color: rgba(209,213,219,.4); }
+    .cta-btn {
+      background: var(--grad);
+      border: none;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .05em;
+      padding: 14px 22px;
+      margin-top: 6px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: opacity .2s, transform .15s;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(249,115,22,.25);
+    }
+    .cta-btn:hover:not(:disabled) { opacity: .92; transform: translateY(-1px); }
+    .cta-btn:active:not(:disabled) { transform: translateY(0); }
+    .cta-btn:disabled { cursor: default; }
+    .cta-btn.success {
+      background: #10a37f;
+      box-shadow: 0 4px 14px rgba(16,163,127,.3);
+    }
+    .typo-warning {
+      display: none;
+      font-size: 11px;
+      color: var(--red);
+      padding-left: 16px;
+      text-align: left;
+      margin-top: -4px;
+    }
+    .typo-warning.visible { display: block; }
+    .form-footer-lock {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 10px;
+      color: rgba(209,213,219,.5);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      margin-top: 48px;
+      font-size: 11px;
+      color: rgba(209,213,219,.3);
+      letter-spacing: .1em;
+      animation: fadeUp .7s .85s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══ SVG ANIMS ═══ */
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-3px); }
+    }
+    @keyframes bobSlow {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-2px); }
+    }
+    @keyframes blink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      96%           { transform: scaleY(.1); }
+    }
+    @keyframes hammer {
+      0%, 100% { transform: rotate(-45deg); }
+      50%      { transform: rotate(15deg); }
+    }
+    @keyframes swing {
+      0%,100% { transform: rotate(-6deg); }
+      50%     { transform: rotate(6deg); }
+    }
+    @keyframes sparkFly {
+      0%   { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--dx,4px), -20px) scale(.3); }
+    }
+    @keyframes buildIn {
+      from { transform: translateY(-8px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes antennaPulse {
+      0%,100% { opacity: .4; }
+      50%     { opacity: 1; }
+    }
+    @keyframes glowPulse {
+      0%,100% { opacity: .5; }
+      50%     { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54R35FLT"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-    
-    <h1>Welcome to Lucrar com IA</h1>
-    <p>Coming soon...</p>
+  <div class="page">
+    <div class="badge">⚡ Em construção</div>
+
+    <h1 class="logo">Lucrar com <span>IA PRO</span></h1>
+    <p class="subtitle">A plataforma está sendo montada</p>
+
+    <!-- ═══ SVG SCENE ═══ -->
+    <div class="scene">
+      <svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f97316"/>
+            <stop offset="100%" stop-color="#dc2626"/>
+          </linearGradient>
+          <linearGradient id="gradSoft" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f97316" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#dc2626" stop-opacity=".7"/>
+          </linearGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <radialGradient id="floorGrad" cx="50%" cy="0%" r="70%">
+            <stop offset="0%" stop-color="#f97316" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ═══ GROUND GLOW ═══ -->
+        <ellipse cx="280" cy="278" rx="220" ry="14" fill="url(#floorGrad)"/>
+        <line x1="60" y1="278" x2="500" y2="278" stroke="#f97316" stroke-width=".5" opacity=".3"/>
+
+        <!-- ═══ CRANE (behind, right side) ═══ -->
+        <g opacity=".85">
+          <!-- mast -->
+          <rect x="445" y="50" width="5" height="228" fill="#1f1f2e" stroke="#f97316" stroke-width=".6"/>
+          <!-- boom -->
+          <rect x="355" y="50" width="145" height="5" fill="#1f1f2e" stroke="#f97316" stroke-width=".6"/>
+          <!-- counterweight -->
+          <rect x="495" y="46" width="14" height="14" rx="1" fill="#dc2626" opacity=".7"/>
+          <!-- cable + hook (swings) -->
+          <g style="transform-origin: 378px 55px; animation: swing 4s ease-in-out infinite;">
+            <line x1="378" y1="55" x2="378" y2="135" stroke="#d1d5db" stroke-width="1"/>
+            <rect x="370" y="135" width="16" height="11" rx="1" fill="#f97316" opacity=".85" stroke="#dc2626" stroke-width=".5"/>
+          </g>
+        </g>
+
+        <!-- ═══ TOWER BEING BUILT (center) ═══ -->
+        <g style="animation: bobSlow 5s ease-in-out infinite;">
+          <!-- base platform -->
+          <rect x="200" y="258" width="160" height="14" rx="2" fill="#1f1f2e" stroke="#f97316" stroke-width="1"/>
+          <rect x="204" y="256" width="152" height="3" rx="1" fill="url(#grad)" opacity=".7"/>
+
+          <!-- block 1 (bottom) -->
+          <g style="animation: buildIn .6s .3s both ease-out;">
+            <rect x="216" y="222" width="128" height="34" rx="3" fill="#1f1f2e" stroke="#f97316" stroke-width="1"/>
+            <circle cx="230" cy="239" r="2.5" fill="#f97316" style="animation: glowPulse 2s infinite;"/>
+            <circle cx="240" cy="239" r="2.5" fill="#dc2626" opacity=".6"/>
+            <rect x="255" y="232" width="75" height="14" rx="2" fill="#0d0d1a"/>
+            <rect x="258" y="235" width="40" height="8" rx="1" fill="#f97316" opacity=".4"/>
+          </g>
+
+          <!-- block 2 (middle) -->
+          <g style="animation: buildIn .6s .9s both ease-out;">
+            <rect x="224" y="186" width="112" height="34" rx="3" fill="#1f1f2e" stroke="#f97316" stroke-width="1"/>
+            <rect x="232" y="194" width="96" height="18" rx="2" fill="#0d0d1a"/>
+            <!-- fake code lines -->
+            <rect x="236" y="198" width="40" height="2" rx="1" fill="#f97316" opacity=".6"/>
+            <rect x="236" y="203" width="55" height="2" rx="1" fill="#dc2626" opacity=".5"/>
+            <rect x="236" y="208" width="30" height="2" rx="1" fill="#f97316" opacity=".5"/>
+          </g>
+
+          <!-- block 3 (top — PRO sign) -->
+          <g style="animation: buildIn .6s 1.5s both ease-out;">
+            <rect x="232" y="138" width="96" height="46" rx="4" fill="#1f1f2e" stroke="#f97316" stroke-width="1.2"/>
+            <rect x="238" y="144" width="84" height="34" rx="3" fill="url(#gradSoft)" opacity=".18"
+                  style="animation: glowPulse 2.5s infinite;"/>
+            <text x="280" y="168" text-anchor="middle" font-family="'Syne',sans-serif" font-size="18"
+                  font-weight="800" fill="#f97316" filter="url(#glow)">PRO</text>
+            <text x="280" y="178" text-anchor="middle" font-family="'Space Mono',monospace" font-size="5"
+                  fill="#d1d5db" opacity=".7" letter-spacing="1">LUCRAR COM IA</text>
+          </g>
+
+          <!-- antenna on top -->
+          <g style="animation: buildIn .5s 2s both ease-out;">
+            <line x1="280" y1="138" x2="280" y2="122" stroke="#f97316" stroke-width="1.2"/>
+            <circle cx="280" cy="120" r="3" fill="#dc2626" style="animation: antennaPulse 1.5s infinite;"/>
+          </g>
+        </g>
+
+        <!-- ═══ ROBOT LEFT — hammering ═══ -->
+        <g transform="translate(130,218)">
+          <g style="animation: bob 2.2s ease-in-out infinite;">
+            <!-- legs -->
+            <rect x="-9" y="40" width="6" height="14" rx="2" fill="#2a2a3e"/>
+            <rect x="3"  y="40" width="6" height="14" rx="2" fill="#2a2a3e"/>
+            <!-- feet -->
+            <rect x="-11" y="52" width="10" height="4" rx="1.5" fill="#1f1f2e"/>
+            <rect x="1"   y="52" width="10" height="4" rx="1.5" fill="#1f1f2e"/>
+            <!-- body -->
+            <rect x="-16" y="14" width="32" height="28" rx="6" fill="#2a2a3e" stroke="#f97316" stroke-width="1"/>
+            <!-- chest panel -->
+            <rect x="-10" y="20" width="20" height="12" rx="2" fill="#0d0d1a"/>
+            <circle cx="-5" cy="26" r="2" fill="#f97316" style="animation: glowPulse 1.4s infinite;"/>
+            <circle cx="2"  cy="26" r="2" fill="#dc2626" style="animation: glowPulse 1.4s .6s infinite;"/>
+            <circle cx="8"  cy="26" r="1.5" fill="#f97316" opacity=".5"/>
+            <!-- neck -->
+            <rect x="-3" y="10" width="6" height="5" fill="#1f1f2e"/>
+            <!-- head -->
+            <rect x="-14" y="-14" width="28" height="24" rx="6" fill="#2a2a3e" stroke="#f97316" stroke-width="1"/>
+            <!-- visor -->
+            <rect x="-10" y="-9" width="20" height="10" rx="2" fill="#0d0d1a"/>
+            <!-- eyes -->
+            <g style="transform-origin: 0 -4px; animation: blink 4s infinite;">
+              <circle cx="-4" cy="-4" r="2" fill="#f97316" filter="url(#glow)"/>
+              <circle cx="4"  cy="-4" r="2" fill="#f97316" filter="url(#glow)"/>
+            </g>
+            <!-- mouth line -->
+            <rect x="-5" y="4" width="10" height="1.5" rx=".5" fill="#f97316" opacity=".5"/>
+            <!-- antenna -->
+            <line x1="0" y1="-14" x2="0" y2="-20" stroke="#d1d5db" stroke-width="1"/>
+            <circle cx="0" cy="-22" r="2.5" fill="#f97316" style="animation: antennaPulse 1.2s infinite;"/>
+            <!-- left arm (steady, resting) -->
+            <rect x="-22" y="18" width="6" height="16" rx="3" fill="#2a2a3e" stroke="#f97316" stroke-width=".6"/>
+            <circle cx="-19" cy="35" r="3" fill="#2a2a3e" stroke="#f97316" stroke-width=".6"/>
+            <!-- right arm with hammer (animated) -->
+            <g style="transform-origin: 18px 20px; animation: hammer .7s ease-in-out infinite;">
+              <rect x="16" y="18" width="6" height="16" rx="3" fill="#2a2a3e" stroke="#f97316" stroke-width=".6"/>
+              <!-- hammer handle -->
+              <rect x="18" y="32" width="2.5" height="12" fill="#d1d5db"/>
+              <!-- hammer head -->
+              <rect x="14" y="42" width="11" height="6" rx="1" fill="#f97316" stroke="#dc2626" stroke-width=".6"/>
+            </g>
+          </g>
+          <!-- sparks from hammering -->
+          <circle cx="25" cy="60" r="1.5" fill="#f97316"
+            style="animation: sparkFly .9s ease-out infinite; --dx: 6px;"/>
+          <circle cx="22" cy="62" r="1" fill="#dc2626"
+            style="animation: sparkFly .9s .3s ease-out infinite; --dx: -4px;"/>
+          <circle cx="28" cy="58" r="1" fill="#fff" opacity=".8"
+            style="animation: sparkFly .9s .5s ease-out infinite; --dx: 3px;"/>
+        </g>
+
+        <!-- ═══ ROBOT RIGHT — holding block ═══ -->
+        <g transform="translate(420,222)">
+          <g style="animation: bob 2.4s .4s ease-in-out infinite;">
+            <!-- legs -->
+            <rect x="-9" y="36" width="6" height="14" rx="2" fill="#2a2a3e"/>
+            <rect x="3"  y="36" width="6" height="14" rx="2" fill="#2a2a3e"/>
+            <!-- feet -->
+            <rect x="-11" y="48" width="10" height="4" rx="1.5" fill="#1f1f2e"/>
+            <rect x="1"   y="48" width="10" height="4" rx="1.5" fill="#1f1f2e"/>
+            <!-- body -->
+            <rect x="-15" y="10" width="30" height="28" rx="6" fill="#2a2a3e" stroke="#dc2626" stroke-width="1"/>
+            <!-- chest circle -->
+            <circle cx="0" cy="24" r="7" fill="#0d0d1a"/>
+            <circle cx="0" cy="24" r="4.5" fill="#dc2626" opacity=".6" style="animation: glowPulse 1.8s infinite;"/>
+            <circle cx="0" cy="24" r="2" fill="#f97316"/>
+            <!-- neck -->
+            <rect x="-3" y="6" width="6" height="5" fill="#1f1f2e"/>
+            <!-- head (round) -->
+            <circle cx="0" cy="-6" r="14" fill="#2a2a3e" stroke="#dc2626" stroke-width="1"/>
+            <!-- visor strip -->
+            <rect x="-11" y="-9" width="22" height="8" rx="2" fill="#0d0d1a"/>
+            <g style="transform-origin: 0 -5px; animation: blink 3.5s .3s infinite;">
+              <circle cx="-5" cy="-5" r="2" fill="#dc2626" filter="url(#glow)"/>
+              <circle cx="5"  cy="-5" r="2" fill="#dc2626" filter="url(#glow)"/>
+            </g>
+            <!-- side ear caps -->
+            <circle cx="-14" cy="-6" r="2" fill="#1f1f2e" stroke="#dc2626" stroke-width=".6"/>
+            <circle cx="14"  cy="-6" r="2" fill="#1f1f2e" stroke="#dc2626" stroke-width=".6"/>
+            <!-- antenna -->
+            <line x1="0" y1="-20" x2="0" y2="-26" stroke="#d1d5db" stroke-width="1"/>
+            <circle cx="0" cy="-28" r="2.5" fill="#dc2626" style="animation: antennaPulse 1.4s .4s infinite;"/>
+            <!-- arms lifted holding block -->
+            <rect x="-22" y="10" width="6" height="14" rx="3" fill="#2a2a3e" stroke="#dc2626" stroke-width=".6"
+                  transform="rotate(-25 -19 17)"/>
+            <rect x="16" y="10" width="6" height="14" rx="3" fill="#2a2a3e" stroke="#dc2626" stroke-width=".6"
+                  transform="rotate(25 19 17)"/>
+            <!-- block being held above head -->
+            <g style="animation: bob 2.4s .4s ease-in-out infinite;">
+              <rect x="-14" y="-42" width="28" height="14" rx="2" fill="url(#grad)" opacity=".9"/>
+              <line x1="-14" y1="-35" x2="14" y2="-35" stroke="#0d0d1a" stroke-width=".8" opacity=".5"/>
+              <line x1="0" y1="-42" x2="0" y2="-28" stroke="#0d0d1a" stroke-width=".8" opacity=".5"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- ═══ AMBIENT PARTICLES ═══ -->
+        <circle cx="160" cy="100" r="1.5" fill="#f97316" opacity=".6"
+          style="animation: sparkFly 4s ease-out infinite; --dx: 6px;"/>
+        <circle cx="400" cy="80" r="1" fill="#dc2626" opacity=".5"
+          style="animation: sparkFly 3.5s 1s ease-out infinite; --dx: -4px;"/>
+        <circle cx="280" cy="60" r="1" fill="#fff" opacity=".4"
+          style="animation: sparkFly 5s 2s ease-out infinite; --dx: 3px;"/>
+      </svg>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>CONSTRUÇÃO EM ANDAMENTO</span>
+        <span id="pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="bar"></div>
+      </div>
+    </div>
+
+    <p class="tagline">
+      A <strong>Lucrar com IA PRO</strong> está sendo construída bloco por bloco.<br/>
+      Automações, agentes de IA e a melhor comunidade de IA em português — chegando em breve.
+    </p>
+
+    <form class="cta-form" id="subscription-form" novalidate>
+      <div class="field">
+        <input type="text" id="nome" placeholder="Seu nome completo" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <input type="email" id="email" placeholder="Seu melhor e-mail" autocomplete="email" required />
+      </div>
+      <div class="typo-warning" id="email-suggestion">E-mail incorreto</div>
+      <button type="submit" class="cta-btn" id="submitBtn">
+        <span id="btnText">Avisar quando abrir →</span>
+      </button>
+      <div class="form-footer-lock">🔒 Seus dados estão 100% seguros</div>
+    </form>
+
+    <p class="footer">© 2026 Lucrar com IA · lucrarcomia.com</p>
+  </div>
+
+  <script>
+    /* ═══ PROGRESS COUNTER ═══ */
+    const pct = document.getElementById('pct');
+    const target = 68;
+    setTimeout(() => {
+      let current = 0;
+      const iv = setInterval(() => {
+        current++;
+        pct.textContent = current + '%';
+        if (current >= target) clearInterval(iv);
+      }, 3500 / target);
+    }, 1200);
+
+    /* ═══ SUPABASE CONFIG (mesma tabela Leads do form /lista-de-inscricao/) ═══ */
+    const SUPABASE_URL = "https://kwepatqnwfpkreswlmww.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3ZXBhdHFud2Zwa3Jlc3dsbXd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNjk0ODQsImV4cCI6MjA4Nzc0NTQ4NH0.0XAW7D_bxEPA9C2ycehvOsBMJAbqjKbtJYwVKd7igTQ";
+
+    /* ═══ EMAIL TYPO DOMAINS ═══ */
+    const invalidDomains = [
+      // Gmail
+      'gnail.com','gmal.com','gmall.com','gmaill.com','gmail.co','gmail.con','gmail.cim',
+      'gmial.com','gmaik.com','gmai.com','gmal.co','gmeil.com','gmaol.com','gnail.co',
+      'gnail.con','gmaiil.com','gmall.co','gimail.com','gmail.om','gmail.cm',
+      // Hotmail
+      'hotmal.com','gotmail.com','homail.com','otmail.com','hotmail.co','hotmail.con',
+      'hotmail.cim','hotmial.com','hotmai.com','hotmil.com','hotmaik.com','htmail.com',
+      'hptmail.com','hotmial.co','hotmaul.com','hotmaill.com',
+      // Outlook
+      'outlook.co','outlook.con','outlok.com','outllok.com','outloook.com','oulook.com',
+      'outook.com','otulook.com','outlok.co',
+      // Live
+      'live.co','live.con','liv.com','lve.com','lieve.com','lige.com','liive.com',
+      // Yahoo
+      'yaho.com','yahoo.co','yahoo.con','yhoo.com','yahho.com','yahopo.com','yaho0.com',
+      'yaoo.com','yahooc.com',
+      // iCloud
+      'iclud.com','icloud.co','icloud.con','iclound.com','icolud.com','icl0ud.com'
+    ];
+
+    /* ═══ TYPO DETECTION ═══ */
+    const emailInput = document.getElementById('email');
+    const suggestionBox = document.getElementById('email-suggestion');
+
+    emailInput.addEventListener('blur', () => {
+      const fullEmail = emailInput.value.trim().toLowerCase();
+      if (!fullEmail.includes('@')) {
+        suggestionBox.classList.remove('visible');
+        return;
+      }
+      const domain = fullEmail.split('@')[1];
+      if (invalidDomains.includes(domain)) {
+        suggestionBox.textContent = 'E-mail incorreto — verifique o domínio';
+        suggestionBox.classList.add('visible');
+      } else {
+        suggestionBox.classList.remove('visible');
+      }
+    });
+
+    emailInput.addEventListener('input', () => {
+      suggestionBox.classList.remove('visible');
+    });
+
+    /* ═══ FORM SUBMIT ═══ */
+    const form = document.getElementById('subscription-form');
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!nome || !email) return;
+
+      // Hard typo block
+      const fullEmail = email.toLowerCase();
+      if (fullEmail.includes('@')) {
+        const domain = fullEmail.split('@')[1];
+        if (invalidDomains.includes(domain)) {
+          suggestionBox.textContent = 'E-mail incorreto — verifique o domínio';
+          suggestionBox.classList.add('visible');
+          emailInput.focus();
+          return;
+        }
+      }
+
+      // Loading state
+      const originalText = btnText.textContent;
+      btnText.textContent = 'Processando...';
+      btn.disabled = true;
+      btn.style.opacity = '.8';
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/Leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ nome, email })
+        });
+
+        if (!response.ok) {
+          if (response.status === 409) {
+            throw new Error('Este e-mail já está cadastrado!');
+          }
+          let exactError = 'Erro desconhecido.';
+          try {
+            const errorJson = await response.json();
+            exactError = errorJson.message || errorJson.error || JSON.stringify(errorJson);
+          } catch (_) {
+            exactError = response.status + ' ' + response.statusText;
+          }
+          throw new Error('Erro ao salvar no banco de dados. ' + exactError);
+        }
+
+        // Success → redirect to the existing obrigado page under /lista-de-inscricao/
+        btnText.textContent = '✓ Redirecionando...';
+        btn.classList.add('success');
+        btn.style.opacity = '1';
+        setTimeout(() => {
+          window.location.href = '/lista-de-inscricao/obrigado.html';
+        }, 800);
+
+      } catch (err) {
+        console.error('Submission Error:', err);
+        alert(err.message || 'Ocorreu um erro ao tentar se cadastrar. Tente novamente.');
+        btnText.textContent = originalText;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    });
+  </script>
 </body>
 </html>
